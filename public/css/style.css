@@ -1,0 +1,903 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root{
+    --backgroundColor: #2380cd;
+    --backgroundColor2: #f2f1f1;
+    --backgroundColor3: #fcf4f4;
+    --backgroundColor4: #1d739e;
+    --backgroundColor5: linear-gradient(70deg,#1d739e, #29353b);
+
+    --Color: #2380cd;
+    --Color2: #b7aeae;
+    --Color3: #4a4a4a;
+    --Color4: #1d739e;
+    --Color5: rgb(228, 228, 228);
+    --Color6: #303030;
+
+    --Red: #f26161;
+    --Green: #8df1ab;
+
+    --box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+}
+
+p {
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: justify;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    line-height: 75px;
+    color: var(--Color3);
+    opacity: 0.6;
+    
+}
+
+h3 {
+    font-weight: 500;
+}
+
+.title-h4 {
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+    margin: auto;
+}
+/************************************* FLASH MESSAGE ************************************** */
+#flash-message {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 600ms ease-out;
+    height: 100px;
+    width: 300px;
+}
+
+#flash-message.flash-message-show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+.message  {
+    height: 100px;
+    width: 300px;
+    color: rgb(102, 102, 102);
+    font-size: 19px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.success {
+/* From https://css.glass */
+background: rgba(85, 172, 96, 0.38);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+border: 1px solid rgba(85, 172, 96, 0.97);
+}
+
+.success>i {
+    color: #3b7a20;
+    padding: 3px;
+}
+
+.error {
+    /* From https://css.glass */
+background: rgba(242, 46, 46, 0.26);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5.2px);
+-webkit-backdrop-filter: blur(5.2px);
+border: 1px solid rgba(242, 46, 46, 0.97);
+}
+
+.error>i {
+    color: #7a2020;
+    padding: 3px;
+}
+
+
+/************************************* BOUTTON RETOUR ************************************** */
+.back {
+    background-color: var(--backgroundColor4);
+    text-transform: uppercase;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    
+}
+.back a {
+    color: white;
+}
+
+
+
+/************************************* NAV ************************************** */
+
+
+.navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 70px;
+    background-color: var(--backgroundColor4);
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    text-decoration: none;
+    position: relative;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: white;
+    margin: 10px;
+    letter-spacing: 2px;
+    position: relative;
+}
+
+.navbar a:after, .navbar a:before {
+    transition: all 0.7s;
+}
+
+.navbar a:after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 0%;
+    height: 1px;
+    content: '.';
+    color: transparent;
+    background: #aaa;
+}
+
+.navbar a:hover:after {
+    width: 100%;
+}
+
+.navbar a:hover {
+    color: var(--Color5);
+}
+#nav-left {
+    position: absolute;
+    left: 50px
+}
+
+#nav-right {
+    position: absolute;
+    right: 50px;
+}
+
+
+/************************************* CONNEXION/INSCRIPTION ************************************** */
+
+.login {
+    height: 320px !important;
+}
+
+.formulaire-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.formulaire-register {
+    display: flex;
+    justify-content: center;
+}
+
+.register {
+    height: 520px;
+    width: 530px;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.29);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2.7px);
+    -webkit-backdrop-filter: blur(2.7px);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.redirection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin: 10px;
+}
+
+.redirection a {
+    color: var(--Color4);
+}
+
+.redirection a:hover {
+    opacity: 0.8;
+}
+
+#password-p{
+    color: var(--Color3);
+    font-size: 12px;
+    font-weight: 200;
+    cursor: pointer;
+    margin-bottom: 10px;color: var(--Color4);
+}
+
+/************************************* HOME PAGE ************************************** */
+
+
+.nav-home {
+    background-color: #fff;
+}
+ section {
+    padding: 100px 200px;
+} 
+.home {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+video {
+    z-index: 000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 80%;
+}
+
+.h1-home {
+    font-size: 3em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    line-height: 75px;
+    color: white;
+    margin-left: 10px;
+}
+
+.span-home {
+    display: block;
+    font-size: 1.2em;
+    font-weight: 800;
+}
+
+.logo-titre {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    
+}
+.img-home {
+    color: white;
+}
+
+
+.h2-home>a {
+    opacity:60%;
+    margin: auto;
+    font-size: 2em;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    line-height: 75px;
+    transition-duration: 0.2ms;
+    
+}
+
+.h2-home:hover a {
+    opacity: 100%;
+}
+
+
+.container {
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-category {
+    margin: 0px 0 30px 0;
+
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.post {
+    width: 50%;
+    background-color: var(--backgroundColor2);
+    margin: 30px;
+    padding: 40px;
+    border-radius: 10px;
+
+}
+
+.pseudo {
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--Color);
+}
+
+.date {
+    font-weight: 300;
+    font-size: 0.8rem;
+    color: var(--Color2);
+}
+
+
+
+/************************************* BANNIERE ************************************** */
+
+
+.banner {
+    position: relative; /* Permet à l'élément ::before d'être positionné par rapport à celui-ci */
+    height: 300px;
+    /* color: #fff; */
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 40px;    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+
+.banner::before {
+    content: ""; /* Nécessaire pour que le pseudo-élément fonctionne */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/banner.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5; /* Ajustez la valeur d'opacité selon vos besoins */
+    z-index: -1; /* Placez-le en arrière-plan, derrière le contenu de la bannière */
+
+}
+
+
+/************************************* FORMULAIRE ************************************** */
+
+
+.formulaire {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.add {
+    height: 330px;
+    width: 580px;
+    border-radius: 20px;
+    background-color: var(--backgroundColor2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 20px;
+}
+
+.add-topic {
+    height: 260px;
+    width: 530px;
+    border-radius: 20px;
+    box-shadow: var(--box-shadow);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    /* From https://css.glass */
+    background: rgba(255, 255, 255, 0.29);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(2.7px);
+    -webkit-backdrop-filter: blur(2.7px);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.add-category {
+    height: 250px;
+    width: 450px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.title-add {
+    align-self: center;
+    justify-content: center;
+    font-weight: 800;
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: var(--Color6);
+    opacity: 0.7;
+}
+
+input {
+    border-radius: 5px;
+    width: 230px;
+    height: 30px;
+    padding: 10px;
+    margin: 5px 0 10px 0;
+    border: 1px solid grey;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+.file {
+    height: 33px;
+    width: 280px; 
+    border: none !important;
+}
+
+.formulaire-post {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.block{
+    display: block;
+   
+}
+
+textarea {
+    width: 500px;
+    height: 80px;
+    margin-top: 10px;
+    border-radius: 5px;
+    display: block;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+.textarea-update {
+    height: 65px;
+}
+
+.textarea-post {
+    width: 700px;
+    height: 130px;
+    margin-bottom: 20px;
+}
+
+.add-post {
+    width: 50%;
+    border-radius: 10px;
+    background-color: var(--backgroundColor2);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px;
+    align-content: flex-end;
+}
+
+
+.form-post {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.submit-post {
+    background-color: var(--backgroundColor);
+    color: white;
+    border-radius: 10px;
+    height: 30px;
+    font-size: 16x;
+}
+
+.submit, .submit-topic {
+    background: var(--backgroundColor);
+    color: white;
+    cursor: pointer;
+    align-self: center;
+    width: 115px;
+
+}
+
+.submit-categroy {
+    margin-top: 10px;
+}
+.submit-topic {
+    text-transform: uppercase;
+    font-size: 13px;
+    transition-duration: 0.6ms;
+    border: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 !important;
+}
+
+.submit-topic:hover {
+    opacity: 0.8;
+    box-shadow: var(--box-shadow);
+
+}
+
+.update {
+    width: 650px;
+    justify-content: center;
+}
+
+.message-connection {
+    text-align: center;
+    font-size: 18px;
+    color: var(--Color4);
+}
+.message-connection i {
+    color: var(--Color4);
+}
+
+/************************************* CATEGORIE ************************************** */
+
+
+.nombre {
+    background-color: var(--backgroundColor);
+    border-radius: 100%;
+    color: white;
+    height: 10px;
+    padding: 5px;
+}
+
+.card {
+    height: 100px;
+    width: 300px;
+    background-color: var(--backgroundColor2);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    transition-duration: 0.6ms;
+}
+
+.card:hover {
+    opacity: 0.8;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+
+}
+
+.card a {
+    text-transform: none; 
+    text-decoration: none;
+    color: var(--Color3);
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* grid-auto-rows: 1fr 1fr 1fr; */
+    gap: 60px;
+    justify-items: center;
+}
+.card-category {
+    height: 400px !important;
+    width: 420px !important;
+    /* background-color: var(--backgroundColor2); */
+     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition-duration: 0.9s;
+    margin: 30px;
+}
+
+.figure-img {
+    
+    height: 300px !important;
+    width: 350px !important;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.category-img {
+    height: 300px !important;
+    width: 350px !important;
+    object-fit: cover;
+    border-radius: 20px;
+    transition-duration: 0.6s; 
+} 
+
+
+.card-category:hover img {
+    filter: grayscale(90%);
+    transform: scale(1.1);
+}
+
+.nb-topic {
+    position: absolute;
+    top: 50%;
+    font-size: 25px;
+    font-weight: 700;
+    color: var(--Color);
+    background-color: var(--backgroundColor3);
+    border-radius: 10px;
+    padding: 8px;
+    opacity: 0;
+}
+
+.card-category:hover .nb-topic {
+    opacity: 1;
+}
+
+h5 {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 550;
+    text-align: center;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.action {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-delete , .btn-update {
+    border-radius: 50% !important;
+    background-color: var(--backgroundColor) !important;   
+    width: 30px;
+    height: 30px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.btn-delete i, .btn-update i{
+    color: white;
+}
+
+.btn-delete:hover , .btn-update:hover {
+   
+}
+
+
+/************************************* PAGE ADMIN ************************************** */
+
+
+
+/************************************* LISTE DES USERS ************************************** */
+
+table {
+    border-collapse: separate;
+    /* border: 2px solid var(--Color4); */
+margin: auto;
+/* border-collapse: collapse; */
+}
+
+/* td, th {
+    width: 80px;
+    /* border: 2px solid var(--Color4); */
+
+/* border-radius: 10px; */
+
+
+th {
+    background-color: var(--backgroundColor4);
+    color: white;
+    font-size: 19px;
+    font-weight: 700;
+    width: 300px;
+    height: 50px;
+    border-radius: 20px;
+    margin: 10px;
+    border-spacing: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+td {
+    padding: 10px;  
+    width: 300px;
+    height: 50px;
+    border-radius: 20px;
+    margin: 10px;
+    border-spacing: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+tr{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+
+
+ .submit-checkbox {
+    background-color: var(--Color4);
+    width: 80px;
+    height: 35px;
+    border-radius: 5px;
+    color: white;
+    font-size: 11px;
+    text-transform: uppercase;
+    cursor: pointer;
+} 
+
+.submit-checkbox:hover {
+    opacity: 0.8;
+}
+
+.form-checkbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 300px;
+    padding: 10px;
+}
+.checkbox-label {
+   flex-direction: column;
+   margin: 10px;
+}
+  
+/* BOUTON CHECKBOX */
+
+  .custom-checkbox {
+    position: relative;
+    width: 80px;
+    height: 35px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--Red);
+    outline: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    box-shadow: inset 0 0 5px rgb(0 0 0 / 50%);
+    transition: background 0.5s; /* Ajout de la transition pour la couleur de fond */
+  }
+  
+  .custom-checkbox::before {
+    content: "";
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+  }
+  
+  .custom-checkbox:checked::before {
+    transform: translateX(150%);
+    background: #fff;
+  }
+  
+  .custom-checkbox:checked {
+    background: var(--Green); /* En vert si coché */
+  }
+  
+  .verouille {
+    /* Styles pour le cas où le boolean est true (fermé) */
+    background: var(--Red);
+    color: white; /* Texte en blanc pour le contraste */
+    border: 2px solid var(--Red);; /* Bordure en rouge */
+  }
+  
+  .actif {
+    /* Styles pour le cas où le boolean est false (ouvert) */
+    background: var(--Green); /* Vert */
+    color: white; /* Texte en blanc pour le contraste */
+    border: 2px solid var(--Green); /* Bordure en vert */
+  }
+  
+  .verrouille:checked {
+    /* Styles spécifiques si fermé et coché */
+    background:var(--Red); /* Garder en rouge */
+  }
+  
+  .actif:checked {
+    /* Styles spécifiques si ouvert et coché */
+    background: var(--Green); /* Garder en vert */
+  }
+  
+  .checkbox-label {
+    font-size: 11px;
+    display: block;
+  }
+
+  .checkbox-label {
+    font-size: 11px;
+    display: block;
+  }
+
+  .td-checkbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+
+
+  /************************************* FOOTER ************************************** */
+
+  .footer {
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--Color4);
+  }
+
+  .footer {
+    text-align: center;
+  }
