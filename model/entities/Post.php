@@ -13,6 +13,7 @@
         private $topic;
         private $user;
         
+        
 
         public function __construct($data){         
             $this->hydrate($data);  // l'hydratation permet de prendre des données de la base de donnée pour créé des objets       

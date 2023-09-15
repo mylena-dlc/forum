@@ -53,9 +53,21 @@ h3 {
     text-align: center;
     margin: auto;
 }
+
 /************************************* FLASH MESSAGE ************************************** */
+
 #flash-message {
-    margin: auto;
+
+}
+
+#flash-message.flash-message-show {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+
+.message  {
+
+        margin: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,25 +75,20 @@ h3 {
 
     opacity: 0;
     transform: translateY(15px);
-    transition: all 600ms ease-out;
-    height: 100px;
-    width: 300px;
-}
+    transition: all 200ms ease-out;
+    height: 40px;
+    width: 500px;
+    
 
-#flash-message.flash-message-show {
-    opacity: 1;
-    transform: translateY(0);
-  }
 
-.message  {
-    height: 100px;
-    width: 300px;
+
     color: rgb(102, 102, 102);
     font-size: 19px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    padding: 10px;
 }
 
 .success {
@@ -211,11 +218,11 @@ border: 1px solid rgba(242, 46, 46, 0.97);
 }
 
 .register {
-    height: 520px;
+    height: 420px;
     width: 530px;
     border-radius: 20px;
     box-shadow: var(--box-shadow);
-    padding: 10px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -247,11 +254,11 @@ border: 1px solid rgba(242, 46, 46, 0.97);
 }
 
 #password-p{
-    color: var(--Color3);
+    color: var(--Color4);
     font-size: 12px;
-    font-weight: 200;
+    font-weight: 500;
     cursor: pointer;
-    margin-bottom: 10px;color: var(--Color4);
+    margin-bottom: 10px;
 }
 
 /************************************* HOME PAGE ************************************** */
@@ -468,7 +475,7 @@ input {
     width: 230px;
     height: 30px;
     padding: 10px;
-    margin: 5px 0 10px 0;
+    margin: 5px 0 15px 0;
     border: 1px solid grey;
 }
 
@@ -612,11 +619,15 @@ textarea {
     transition-duration: 0.6ms;
 }
 
+
 .card:hover {
     opacity: 0.8;
-    cursor: pointer;
+    
     box-shadow: var(--box-shadow);
+}
 
+.card a:hover{
+    cursor: pointer;
 }
 
 .card a {
@@ -724,6 +735,20 @@ a {
 .btn-delete:hover , .btn-update:hover {
    
 }
+
+
+  /************************************* TOPIC ************************************** */
+
+  .card {
+    position: relative;
+  }
+
+  .is-closed {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--Color2);
+  }
 
 
 /************************************* PAGE ADMIN ************************************** */

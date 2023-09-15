@@ -22,8 +22,9 @@ $topic = $result['data']['topic'];
 
   <div class="posts"> 
     <?php 
-        foreach($posts as $post){
-          
+
+        foreach($posts as $key => $post){
+
     ?>
        
     <div class="post">
@@ -32,16 +33,25 @@ $topic = $result['data']['topic'];
 
         <p><?=$post->getText()?></p>
     <br>
+
+    <!-- Si on est admin, ou si on est l'utilisateur qui a posté le post et qu'on est bien connecté, alors on affiche les boutons d'action -->
+    <?php                  
+    if (App\Session::isAdmin() || isset($_SESSION['user']) && ($_SESSION['user']->getId() == $post->getUser()->getId())){
+    ?>
+
     <div class="action">
         <!-- suppression d'un post -->
+        <!-- <?php if($key > 0) { ?> Si l'index du tableau de post est plus grand que 0, alors je peux supprimer le post -->
         <button class="btn-delete">
             <a href="index.php?ctrl=forum&action=deletePost&id=<?= $post->getId() ?>"><i class="fa-solid fa-trash"></i></a>
         </button>
+        <?php }?>
         <!-- modification d'un post -->
         <button class="btn-update">
-            <a href="index.php?ctrl=forum&action=updatePost&id=<?= $post->getId() ?>"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="index.php?ctrl=forum&action=updatePostForm&id=<?= $post->getId() ?>"><i class="fa-solid fa-pen-to-square"></i></a>
         </button>
       </div>
+      <?php } ?>
     </div>
 
     <?php
@@ -51,7 +61,9 @@ $topic = $result['data']['topic'];
 <div class="formulaire-post">
 
       <?php    
-      if($topic->getIsClosed() == 0) {              
+      // Si le topic est actif, alors on peux ajouter un post
+      if($topic->getIsClosed() == 0) {   
+        // et si on est connecté  
         if(App\Session::getUser()){
       ?>
 
@@ -68,8 +80,9 @@ $topic = $result['data']['topic'];
             <input class="submit-topic" type="submit" name="submit" value="Ajouter">
           </form>
         </div>
+
         <?php } else { ?>
-              <p class="message-connection"> Pour publier un commentaire veuillez vous connecter<a href="./view/security/login.php"> <i class="fa-solid fa-share"></i></a></p>
+              <p class="message-connection"> Pour publier un commentaire veuillez vous connecter<a href="index.php?ctrl=security&action=loginForm"> <i class="fa-solid fa-share"></i></a></p>
         <?php } 
       } else { ?>
               <p class="message-connection">Le sujet est fermé, vous ne pouvez plus poster de commentaire.</p>

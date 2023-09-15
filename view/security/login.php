@@ -12,16 +12,14 @@
         <form action="index.php?ctrl=security&action=login" method="post">
 
             <label for="email">E-mail :</label>
-            <input type="email" name="email" placeholder="Entrez votre email" required><br>
+            <input type="email" name="email" placeholder="Entrez votre email" required>
             
-   
-            
-
+  
             <label for="password">Mot de passe :</label>
             <div class="password-input-container">
               <input type="password" id="password-input" name="password" placeholder="Entrez votre mot de passe" required>
               <p id="password-p"><i class="fa-solid fa-eye" id="show-password"></i> Afficher votre mot de passe</p> 
-            </div>
+            </div> <br>
 
             <input class="submit-topic" type="submit" name="submit" value="Se connecter">
           

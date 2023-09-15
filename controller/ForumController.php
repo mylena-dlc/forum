@@ -16,7 +16,7 @@
         public function index(){
           
             $manager = new CategoryManager;
-            // $categories = $manager->findAll();
+         
             $categories = $manager->findAllPlusNbTopic(["label", "ASC"]);
  
              return [
@@ -205,41 +205,47 @@
          // fonction pour lister tous les topics pour une catégorie
          public function listTopicsByIdCategory($id){
 
-            $manager = new TopicManager;
+            $topicManager = new TopicManager;
             $categoryManager = new CategoryManager;
-            // $postManager = new PostManager;
+            $postManager = new PostManager;
     
-            $topics = $manager->listTopicById($id);
+            $topics = $topicManager->listTopicById($id);
+
             $category = $categoryManager->findOneById($id);
+
+
+            
+            // $postIdTopic = $postManager->findOneById($id);
+            // $idTopic = $postIdTopic->getTopic()->getId();
+        
+//             $idTopic1 = $topics->getId();
+          
+// var_dump($idTopic1); die;
 
              return [
                  "view" => VIEW_DIR."forum/detailCategory.php",
                  "data" => [
                      "topics" => $topics,
                      "category" => $category
-                    //  "post" => $post
+                    
                  ]
              ];
          }           
-          // foreach($topics as $topic){
-            //     $idTopic = $topic->getId();
-            //     $post = $postManager->listOnePostById($idTopic);
-            //     return $post;
-            // }
-                
-            //  var_dump($post);die;
-
-
+   
                   // fonction pour afficher le premier post pour chaque topic
-                //   public function listPostByTopic($id){
-
-                //     $manager = new PostManager;
-                //     $post = $manager->listOnePostById($id);
+                //   public function listPostByIdTopic($id){
+                //     $topics = new TopicManager;
+                //     $category = new CategoryManager;
+                //     $postManager = new PostManager;
                     
 
+                //    $post = $postManager->listOnePostByIdTopic($id);
+                //     var_dump($post);
                 //      return [
                 //          "view" => VIEW_DIR."forum/detailCategory.php",
                 //          "data" => [
+                //             "topics" => $topics,
+                //             "category" => $category,
                 //              "post" => $post
                 //          ]
                 //      ];
@@ -259,26 +265,29 @@
             // on vérifie ce qui arrive en POST
             if(isset($_POST['submit'])) {
                 $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-                $id = $_POST['category_id']; // input type hidden
-
-                // on filtre le premier post
                 $text = filter_input(INPUT_POST, "text", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-                // on ajoute un tableau avec les nouvelles données du topic
-                $idTopic = $manager->add(["title" => $title, "category_id" => $id, "user_id" => $user->getId()]);
+                if ($text == []) {
+                    // on ajoute un tableau avec les nouvelles données du topic
+                    $idTopic = $manager->add(["title" => $title, "category_id" => $id, "user_id" => $user->getId()]);
 
-                // on récupère le nouvel Id créé automatiquement grâce à la fonction InsertInto de la fonction add
+                    // on récupère le nouvel Id créé automatiquement grâce à la fonction InsertInto de la fonction add
 
-                // on ajoute un tableau avec les nouvelles données du 1er post
-                $posts = $postManager->add(['text' => $text, "topic_id" => $idTopic, "user_id" => $user->getId()]);
+                    // on ajoute un tableau avec les nouvelles données du 1er post
+                    $posts = $postManager->add(['text' => $text, "topic_id" => $idTopic, "user_id" => $user->getId()]);
 
-                    if($posts){
-                        Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Sujet ajouté !" );
-                        $this->redirectTo("forum", "listTopicsByIdCategory", $id);
-                    } else {
-                        Session::addFlash('error',"Erreur lors de l'ajout du sujet !" );
-                        $this->redirectTo("forum","listCategories");
-                    }   
+                        if($posts){
+                            Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Sujet ajouté !" );
+                            $this->redirectTo("forum", "listTopicsByIdCategory", $id);
+                        } else {
+                            Session::addFlash('error',"Erreur lors de l'ajout du sujet !" );
+                            $this->redirectTo("forum","listCategories");
+                        }  
+                } else {
+                    Session::addFlash('error',"<i class='fa-solid fa-square-check'></i>Il faut ajouter le premier commentaire !" );
+                    $this->redirectTo("forum", "listTopicsByIdCategory", $id);
+
+                }
             }
         }
     
@@ -289,26 +298,21 @@
             $categoryManager = new CategoryManager;
             $topicManager = new TopicManager;
 
-            $topics = $topicManager->delete($id);
+            // on cherche l'id de la catégorie du topic
+            $topic = $topicManager->findOneById($id);
+            $idCategory = $topic->getCategory()->getId();
 
-            $category = $categoryManager->findOneById($id);
+            // on supprime le topic
+            $topic = $topicManager->delete($id);
 
-            if($topics) {
-                Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Le sujet a été supprimé !" );
+            if($topic) {
+                Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Le sujet a été supprimé !");
+                $this->redirectTo("forum", "listTopicsByIdCategory", $idCategory);
 
             } else {
-                Session::addFlash('error',"<i class='fa-solid fa-circle-exclamation'></i>Echec lors de la suppression du sujet" );
-            }
-
-            // $this->redirectTo("forum","detailCategory", $category);
-            // return [
-            //     "view" => VIEW_DIR."forum/detailCategory.php",
-            //     "data" => [
-            //         "topics" => $topics,
-            //         "category" => $category
-            //     ]
-            // ];
-            
+                Session::addFlash('error',"<i class='fa-solid fa-circle-exclamation'></i>Echec lors de la suppression du sujet");
+                $this->redirectTo("forum", "listTopicsByIdCategory", $idCategory);
+            } 
         }
 
 
@@ -323,7 +327,6 @@
                 "view" => VIEW_DIR."forum/updateTopic.php", // vue pour afficher le formulaire
                 "data" => [  // La clé "data" contient un tableau associatif contenant les données à transmettre à la vue
                     "topic" => $topic  // La clé "category" contient l'objet de catégorie récupéré précédemment, qui sera accessible dans la vue
-
                 ]
             ];
         }
@@ -380,39 +383,19 @@
 
             $manager = new PostManager;
             $topicManager = new TopicManager;
-            $userManager = new UserManager;
 
             $posts = $manager->listPostById($id);
             
             $topic = $topicManager->findOneById($id);
 
-            // $user = $userManager->listUserByPost($id);
-//  var_dump($user);die;
              return [
                  "view" => VIEW_DIR."forum/detailTopic.php",
                  "data" => [
                      "posts" => $posts,
                      "topic" => $topic
-                    //  "user" => $user
                  ]
              ];
          }
-
-        // fonction pour lister le premier post pour un topic
-        // public function listOnePostTopic($id){
-
-        // $manager = new PostManager;
-        // $post = $manager->listOnePost($id);
-
-        //     return [
-        //         "view" => VIEW_DIR."forum/detailCategory.php",
-        //         "data" => [
-        //             "post" => $post
-        //         ]
-        //     ];
-        // }
-
-
 
         // fonction pour ajouter un post à un topic
         public function addPost($id){
@@ -431,12 +414,64 @@
                 // on ajoute un tableau avec les nouvelles données
                 $post = $manager->add(["text" => $text, "topic_id" => $id, "user_id" => $user->getId()]);
             
-                // puis on redirige vers la vue détailTopic
-                $this->redirectTo("forum", "listPostsByIdTopic", $id);
-                
+                // on redirige vers la vue détailTopic
+                if($post) {
+                    Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Le commentaire a été ajouté !" );
+                    $this->redirectTo("forum", "listPostsByIdTopic", $id);
+
+                    } else {
+                    Session::addFlash('error',"<i class='fa-solid fa-circle-exclamation'></i> Echec lors de l'ajout du commentaire" );
+                    $this->redirectTo("forum", "listPostsByIdTopic", $id);
+                    }
             }   
         }
 
+
+        // fonction de redirection pour modifier un post
+        public function updatePostForm($id){
+            $manager = new PostManager;
+        
+            $post = $manager->findOneById($id);
+            
+            return [
+                "view" => VIEW_DIR."forum/updatePost.php", // vue pour afficher le formulaire
+                "data" => [  // La clé "data" contient un tableau associatif contenant les données à transmettre à la vue
+                    "post" => $post
+                    
+                ]
+            ];
+        }
+
+         // fonction pour modifier un post
+         public function updatePost($id) {
+
+            $postManager = new PostManager;
+            $topicManager = new TopicManager;
+
+            $user = Session::getUser(); // on ajoute l'id user de l'utilisateur connecté
+            
+            // on cherche l'id du topic de ce post (pour la redirection)
+            $post = $postManager->findOneById($id);
+            $idTopic = $post->getTopic()->getId();
+
+            // on vérifie ce qui arrive en POST
+            if(isset($_POST['submit'])) {
+                $text = filter_input(INPUT_POST, "text", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+                
+                // on remplace avec les nouvelles données du post
+                $post = $postManager->update(["text" => $text, "id" => $id, "user_id" => $user->getId()]);
+    
+                    if($post) {
+                    Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Le commentaire a été modifié !" );
+                    $this->redirectTo("forum", "listPostsByIdTopic", $idTopic);
+
+                    } else {
+                    Session::addFlash('error',"<i class='fa-solid fa-circle-exclamation'></i> Echec lors de la modification du commentaire" );
+                    $this->redirectTo("forum", "listPostsByIdTopic", $idTopic);
+                    }
+        }
+
+    }
 
         // fonction pour supprimer un post
         public function deletePost($id) {
@@ -448,19 +483,30 @@
             $post = $postManager->findOneById($id);
             $idTopic = $post->getTopic()->getId();
 
-            // avant de supprimer le post, on vérifie que ce ne soit pas le dernier post en ligne
-            // $nbPost = $
+            // on supprime le post
             $post = $postManager->delete($id);
 
             if($post) {
                 Session::addFlash('success',"<i class='fa-solid fa-square-check'></i> Le commentaire a été supprimé !" );
-
+                $this->redirectTo("forum", "listPostsByIdTopic", $idTopic);
             } else {
                 Session::addFlash('error',"<i class='fa-solid fa-circle-exclamation'></i>Echec lors de la suppression du commentaire" );
+                $this->redirectTo("forum", "listPostsByIdTopic", $idTopic);
             }
-
-            $this->redirectTo("forum", "listPostsByIdTopic", $idTopic);
         }
+
+
+        // fonction pour afficher le premier post dans la liste des topics par catégorie
+        // public function firstPostByIdTopic($id) {
+
+        //     $postManager = new PostManager;
+        //     $topicManager = new TopicManager;
+
+        //     // on cherche l'id du topic correspondant pour la redirection
+        //     $post = $postManager->findOneById($id);
+        //     $idTopic = $post->getTopic()->getId();
+
+        // }
         
 
 

@@ -56,18 +56,18 @@
 
             
             <!-- c'est ici que les messages (erreur ou succès) s'affichent-->
-            <div id="flash-message">
+            <!-- <div id="flash-message"> -->
 
            
             <?php if ($error_message = App\Session::getFlash("error")) : ?>
-                <h3  class="message error"><?= $error_message ?></h3>
+                <h3  id="flash-message" class="message error"><?= $error_message ?></h3>
             <?php endif; ?>
 
             <?php if ($success_message = App\Session::getFlash("success")) : ?>
-                <h3  class="message success"><?= $success_message ?></h3>
+                <h3  id="flash-message" class="message success"><?= $success_message ?></h3>
             <?php endif; ?>
             
-            </div>
+            <!-- </div> -->
 
 
             <main id="forum">
@@ -95,7 +95,7 @@
         // fonction pour afficher les messages flash pendant 9 secondes
         function displayMessage() {
             const message = document.getElementById('flash-message');
-            const duration = 9000;
+            const duration = 3000;
             message.classList.add('flash-message-show');
 
             setTimeout(function() {
@@ -108,34 +108,7 @@
 
        
    
-        
-// function validateForm() {
-//     var isValid = true; // Initialisez une variable pour suivre si le formulaire est valide
-// consol.log("hello");
-//     // Réinitialisez les messages d'erreur à chaque soumission
-//     document.getElementById('pseudo-error').textContent = '';
-//     document.getElementById('email-error').textContent = '';
-//     document.getElementById('password-error').textContent = '';
 
-//     // Récupérez les valeurs des champs
-//     var pseudo = document.getElementById('pseudo').value;
-//     var email = document.getElementById('email').value;
-//     var password = document.getElementById('password').value;
-//     var confirmPassword = document.getElementById('confirmPassword').value;
-
-//     // Vérifiez si le mot de passe a au moins 12 caractères
-//     if (password.length < 12) {
-//         document.getElementById('password-error').textContent = "Mot de passe invalide : il doit contenir au moins 12 caractères.";
-//         isValid = false;
-//     }
-
-//     // Ici, vous pouvez ajouter des vérifications supplémentaires, par exemple, vérifier si le pseudo ou l'email existent déjà en BDD.
-//     // Vous devrez peut-être faire une requête AJAX pour effectuer ces vérifications côté serveur.
-
-//     // Si les vérifications échouent, définissez isValid sur false et affichez les messages d'erreur appropriés.
-
-//     return isValid; // Retourne true si le formulaire est valide, false sinon
-// }
 
 
 

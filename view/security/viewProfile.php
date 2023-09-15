@@ -20,16 +20,15 @@ $user = $result['data']['user'];
                 <th>Pseudo</th>
                 <th>Mail</th>
                 <th>Date d'inscription</th>
-                <th>Utilisateur bloqué</th>
             </tr>
         </thead>
         <tbody>
             <tr>
 
                 <td> <?=$user->getPseudo()?></td>
+                <td>Modifier mon pseudo</td>
                 <td><?=$user->getEmail()?> </td>
                 <td><?=$user->getCreationDate()?> </td>
-                <td><?=$user->getisClosed() ? "Oui" : "Non" ?> </td>
             </tr>    
 
         </tbody>

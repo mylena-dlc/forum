@@ -14,19 +14,23 @@
         <form action="index.php?ctrl=security&action=register"  onsubmit="return validateForm()" method="post" >
             <label for="pseudo">Pseudo :</label>
             <input type="text" id="pseudo"  name="pseudo" placeholder="Entrez un pseudo" required>
-            <span id="pseudo-error" class="error"></span>
-
-            <br>
             
             <label for="email">E-mail :</label>
-            <input type="email" name="email" placeholder="Entrez un email valide" required><br>
+            <input type="email" name="email" placeholder="Entrez un email valide" required>
             
-            <label for="password">Mot de passe :</label>
-            <input type="password" name="password" placeholder="Entrez un mot de passe" minlength="12" required><br>
 
-            <label for="confirmPassword">Confirmer le mot de passe :</label>
-            <input type="password" name="confirmPassword" placeholder="Confirmez votre mot de passe" minlength="12" required><br>
+            <label for="password">Mot de passe :</label>
+            <div class="password-input-container">
+              <input type="password" id="password-input" name="password" placeholder="Entrez votre mot de passe" minlength="12" required>
+              <p id="password-p"><i class="fa-solid fa-eye" id="show-password"></i> Afficher votre mot de passe</p> 
+            </div>
             
+            <div class="password-input-container">
+              <input type="password" id="password-input" name="password" placeholder="Confirmez votre mot de passe" minlength="12" required>
+              <p id="password-p"><i class="fa-solid fa-eye" id="show-password"></i> Afficher votre mot de passe</p> 
+            </div>
+
+
             <input class="submit-topic submit-category" type="submit" name="submit" value="S'inscrire">
             
             <div class="redirection">

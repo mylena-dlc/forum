@@ -31,19 +31,20 @@
         }
 
                 // Fonction pour afficher le 1er post d'un seul topic
-                public function listOnePostById($id){
+                // public function listOnePostByIdTopic($id){
 
-                    $sql = "SELECT *
-                    FROM ".$this->tableName." 
-                    INNER JOIN topic ON topic_id = id_topic
-                    WHERE topic_id = :id";
+                //     $sql = "SELECT *
+                //     FROM ".$this->tableName." p
+                //       WHERE topic_id = :id
+                //       ORDER BY p.creationDate ASC
+                //       LIMIT 1";
         
-                    return $this->getOneOrNullResult(
-                        DAO::select($sql, ["id" => $id]), 
-                        $this->className
-                    );
+                //     return $this->getOneOrNullResult(
+                //         DAO::select($sql, ["id" => $id]), 
+                //         $this->className
+                //     );
         
-                }
+                // }
 
                     // // Fonction pour récupéré les messages d'un utilisateur
                     public function postByUser($id){
@@ -58,6 +59,11 @@
                         );
             
                     }
+
+
+
+
+
 
 
     }
