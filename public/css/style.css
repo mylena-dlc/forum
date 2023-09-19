@@ -1077,6 +1077,24 @@ footer {
     flex-direction: column;
 }
 
+.logo-titre{
+    flex-direction: column;
+}
+
+.figure-home {
+    padding-bottom: 30px;
+}
+
+.p-home {
+    letter-spacing: 0;
+    font-size: 25px;
+}
+
+.h2-home {
+    font-size: 30px;
+
+}
+
 }
 
 
