@@ -57,8 +57,11 @@ class SecurityController extends AbstractController implements ControllerInterfa
 
         return [
             "view" => VIEW_DIR . "security/register.php", // vue pour afficher le formulaire
-            "title" => "Inscription",
-            "description" => "Formulaire d'inscription au forum"
+            "data" => [
+                "title" => "Inscription",
+                "description" => "Formulaire d'inscription au forum"
+            ]
+            
         ];
     }
 
@@ -133,9 +136,12 @@ class SecurityController extends AbstractController implements ControllerInterfa
     {
 
         return [
-            "view" => VIEW_DIR . "security/login.php", // vue pour afficher le formulaire
-            "title" => "Connexion",
-            "description" => "Formulaire de connexion au forum"
+            "view" => VIEW_DIR . "security/login.php", // vue pour afficher le formulaire 
+            "data" => [
+                "title" => "Connexion",
+                "description" => "Formulaire de connexion au forum"
+            ]
+            
         ];
     }
 

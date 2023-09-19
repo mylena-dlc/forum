@@ -19,7 +19,8 @@ class HomeController extends AbstractController implements ControllerInterface
         return [
             "view" => VIEW_DIR . "forum/home.php",
             "data" => [
-                "title" => "Acceuil"
+                "title" => "Accueil",
+                "description" => "Page d'accueil du forum"
             ]
         ];
     }
@@ -43,7 +44,11 @@ class HomeController extends AbstractController implements ControllerInterface
     public function home()
     {
         return [
-            "view" => VIEW_DIR . "forum/home.php"
+            "view" => VIEW_DIR . "forum/home.php",
+            "data" => [
+                "title" => "Accueil",
+                "description" => "Page d'accueil du forum"
+            ]
         ];
     }
 }
