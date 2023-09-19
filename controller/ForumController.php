@@ -34,7 +34,11 @@ class ForumController extends AbstractController implements ControllerInterface
     public function home()
     {
         return [
-            "view" => VIEW_DIR . "forum/home.php"
+            "view" => VIEW_DIR . "forum/home.php",
+            "data" => [
+                "title" => "Accueil",
+                "description" => "Page d'accueil du forum"
+            ]
         ];
     }
 

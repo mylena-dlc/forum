@@ -30,9 +30,10 @@ $description = $result["data"]['description'];
           <p id="password-p"><i class="fa-solid fa-eye" id="show-password"></i> Afficher votre mot de passe</p>
         </div>
 
-        <div class="password-input-container">
-          <input type="password" id="password-input" name="password" placeholder="Confirmez votre mot de passe" minlength="12" required>
-          <p id="password-p"><i class="fa-solid fa-eye" id="show-password"></i> Afficher votre mot de passe</p>
+        <label for="confirmPassword">Confirmez le mot de passe :</label>
+        <div class="confirm-password-input-container">
+          <input type="password" id="confirm-password-input" name="confirmPassword" placeholder="Confirmez votre mot de passe" minlength="12" required>
+          <p id="confirm-password-p"><i class="fa-solid fa-eye" id="show-confirm-password"></i> Afficher votre mot de passe</p>
         </div>
 
 

@@ -14,6 +14,7 @@
     --backgroundColor4: #1d739e;
     --backgroundColor5: linear-gradient(70deg,#1d739e, #29353b);
     --backgroundColor6: #dcdcdc;
+    --backgroundColor7: rgb(228,288,288,0.5);
 
     --Color: #2380cd;
     --Color2: #b7aeae;
@@ -258,7 +259,7 @@ border: 1px solid rgba(242, 46, 46, 0.97);
     opacity: 0.8;
 }
 
-#password-p{
+#password-p, #confirm-password-p{
     color: var(--Color4);
     font-size: 12px;
     font-weight: 500;
@@ -663,9 +664,8 @@ textarea {
 }
 
 .card-category {
-    height: 400px !important;
-    width: 420px !important;
-    /* background-color: var(--backgroundColor2); */
+    height: 420px;
+    width: 420px;
      box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;;
     border-radius: 20px;
     display: flex;
@@ -771,6 +771,7 @@ a {
 table {
     border-collapse: separate;
     margin: auto;
+    width: 90%;
 }
 
 th {
@@ -778,7 +779,7 @@ th {
     color: white;
     font-size: 19px;
     font-weight: 700;
-    width: 300px;
+    width: 20%;
     height: 50px;
     border-radius: 20px;
     margin: 10px;
@@ -790,7 +791,7 @@ th {
 
 td {
     padding: 10px;  
-    width: 300px;
+    width: 20%;
     height: 50px;
     border-radius: 20px;
     margin: 10px;
@@ -825,8 +826,7 @@ tr {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 300px;
-    padding: 10px;
+    margin-left: 50%;
 }
 
 .checkbox-label {
@@ -929,7 +929,7 @@ tr {
 }
 
 .input-password {
-    width: 255px;
+    width: 290px;
 }
 
 h4 {
@@ -937,7 +937,31 @@ h4 {
     text-align: center;
 }
 
+.h4-update {
+    margin: 10px 0 10px 0;
+
+}
+
+.delete-user {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--backgroundColor4);
+    border-radius: 50%;
+    margin: auto;
+}
+
+.delete-user i {
+    width: 60px;
+    height: 60px;
+    color: white;
+}
+
+
   /************************************* FOOTER ************************************** */
+
 
 footer {
     height: 45px;
@@ -1023,6 +1047,7 @@ footer a {
 
     /* Nav */
 
+    
     #nav-right {
         background-color: var(--backgroundColor4);
         display: flex;
@@ -1109,9 +1134,94 @@ section {
     padding: 50px;
 }
 
+/* Banner */
+
+.grid {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: 1fr;
+    align-items: center;
+}
+
+.banner {
+    height: auto;
+    flex-direction: column;
+}
+
+.formulaire {
+    width: 100%;
+}
+
+.add-category, .add-topic {
+    width: 100%;
+}
+
+.nb-topic {
+    top: 85%;
+    opacity: 1;
+    bottom: 0;
+    background-color: var(--backgroundColor7);
+
+}
+
+.card {
+    width: 80%;
+}
+
+.post {
+    width: 80%;
+}
+/* mon profile */
+
+.update-profile {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.update-pseudo, .update-email, .update-password {
+     margin-bottom: 30px;
+}
+
+.update-pseudo, .update-email {
+    height: 250px;
+}
+
+.update-password {
+    height: 440px;
+}
+
+/* liste des users */
+
+th {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+td {
+    font-size: 12px;
+}
+
+tr {
+    height: 100px ;
+}
+
+.form-checkbox {
+    margin: 0;
+    flex-direction: column;
+}
+
+.custom-checkbox {
+    margin: 0;
 }
 
 
+
+
+
+
+}
 @media only screen and (max-width: 767px ) {
 
 }

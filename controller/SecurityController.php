@@ -35,7 +35,9 @@ class SecurityController extends AbstractController implements ControllerInterfa
     {
 
         $manager = new UserManager;
-        $users = $manager->findAll(['creationDate', 'DESC']);
+        // $users = $manager->findAll(['creationDate', 'DESC']);
+
+        $users = $manager->findAllUsers(['creationDate', 'DESC']);
 
         return [
             "view" => VIEW_DIR . "security/listUsers.php",
@@ -46,6 +48,7 @@ class SecurityController extends AbstractController implements ControllerInterfa
             ]
         ];
     }
+
 
 
     /************************************* S'INSCRIRE ************************************** */
@@ -141,7 +144,6 @@ class SecurityController extends AbstractController implements ControllerInterfa
                 "title" => "Connexion",
                 "description" => "Formulaire de connexion au forum"
             ]
-            
         ];
     }
 
@@ -223,6 +225,30 @@ class SecurityController extends AbstractController implements ControllerInterfa
         ];
     }
 
+    // fonction pour supprimer son compte
+    public function deleteUser($id) {
+
+        $userManager = new UserManager;
+
+        $user = $userManager->findOneById($id);
+
+        // on ne supprime pas l'utilisateur afin que ses topics ou post soient toujours visibles, on va changer son pseudo, son email, et rehashé son mdp
+        $password = $user->getPassword();
+        $passwordHash = md5($password);
+
+        // on créé un identifiant unique pour l'utilisateur et l'email car ils doivent être unique dans la BDD
+        $uniqueId = uniqid();
+
+        $user = $userManager->update(["pseudo" => "utilisateur supprimé $uniqueId ", "email" => "utilisateur supprimé $uniqueId", "password" => $passwordHash, "isClosed" => 1, "id" => $id]);
+            if($user) {
+                unset($_SESSION['user']);
+                Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> Votre compte a été supprimé !");
+            } else {
+                Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i>Echec lors de la suppression de votre compte");
+            }
+
+        $this->redirectTo("forum", "home");
+    }
 
     // fonction pour modifier son pseudo
     public function updatePseudo($id)

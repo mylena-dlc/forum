@@ -27,10 +27,12 @@ $description = $result["data"]['description'];
                 <td><?= $user->getEmail() ?> </td>
                 <td><?= $user->getCreationDate() ?> </td>
             </tr>
-
         </tbody>
-
     </table>
+
+    <button class="delete-user">
+        <a href="index.php?ctrl=security&action=deleteUser&id=<?= $user->getId() ?>"><i class="fa-solid fa-trash delete-user"></i></a>
+    </button>
 
     <div class="update-profile">
 
@@ -60,7 +62,7 @@ $description = $result["data"]['description'];
         </div>
 
         <div class="update-password">
-            <h4>Modifier mon mot de passe</h4>
+            <h4 class="h4-update">Modifier mon mot de passe</h4>
             <form action="index.php?ctrl=security&action=updatePassword&id=<?= $user->getId() ?>" method="post">
 
                 <label for="password">Ancien mot de passe :</label>

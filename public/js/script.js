@@ -61,7 +61,7 @@ checkbox.addEventListener('click', () => {
 });
 
 
-    // Fonction pour afficher le bouton "modifier" uniquement lorsqu'on clique sur le bouton checkbox
+// Fonction pour afficher le bouton "modifier" uniquement lorsqu'on clique sur le bouton checkbox
 
     // Sélectionnez toutes les paires de cases à cocher et de boutons submit
     const checkboxFormPairs = document.querySelectorAll('.form-checkbox');
@@ -86,22 +86,39 @@ checkbox.addEventListener('click', () => {
     });
 
 
-    // fonction pour afficher le mdp en clair au click
+// fonction pour afficher le mdp en clair au click (premier input password)
 const passwordInput = document.getElementById('password-input');
-  const showPasswordIcon = document.getElementById('show-password');
-  const linkShowPassWordIcon = document.getElementById('password-p');
+const showPasswordIcon = document.getElementById('show-password');
+const linkShowPassWordIcon = document.getElementById('password-p');
 
-  linkShowPassWordIcon.addEventListener('click', () => {
-    if (passwordInput.type === 'password') {
-      passwordInput.type = 'text';
-      showPasswordIcon.classList.remove('fa-eye');
-      showPasswordIcon.classList.add('fa-eye-slash');
-    } else {
-      passwordInput.type = 'password';
-      showPasswordIcon.classList.remove('fa-eye-slash');
-      showPasswordIcon.classList.add('fa-eye');
-    }
-  });
+linkShowPassWordIcon.addEventListener('click', () => {
+if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    showPasswordIcon.classList.remove('fa-eye');
+    showPasswordIcon.classList.add('fa-eye-slash');
+} else {
+    passwordInput.type = 'password';
+    showPasswordIcon.classList.remove('fa-eye-slash');
+    showPasswordIcon.classList.add('fa-eye');
+}
+});
+
+// fonction pour afficher le mdp en clair au click (deuxieme input password du register)
+const confirmPasswordInput = document.getElementById('confirm-password-input');
+const showConfirmPasswordIcon = document.getElementById('show-confirm-password');
+const linkShowConfirmPassWordIcon = document.getElementById('confirm-password-p');
+
+linkShowConfirmPassWordIcon.addEventListener('click', () => {
+if (confirmPasswordInput.type === 'password') {
+    confirmPasswordInput.type = 'text';
+    showConfirmPasswordIcon.classList.remove('fa-eye');
+    showConfirmPasswordIcon.classList.add('fa-eye-slash');
+} else {
+    confirmPasswordInput.type = 'password';
+    showConfirmPasswordIcon.classList.remove('fa-eye-slash');
+    showConfirmPasswordIcon.classList.add('fa-eye');
+}
+});
 
           // $(document).ready(function(){
         //     $(".message").each(function(){

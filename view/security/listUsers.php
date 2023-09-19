@@ -30,8 +30,8 @@ $description = $result["data"]['description'];
                     <td> <?= $user->getPseudo() ?></td>
                     <td><?= $user->getEmail() ?> </td>
                     <td><?= $user->getCreationDate() ?> </td>
-
-                    <!-- bouton checkbox -->
+                    
+                    <!-- bouton checkbox pour verouiller un utilisateur -->
                     <td class="td-checkbox">
                         <form class="form-checkbox" action="index.php?ctrl=security&action=closedUser&id=<?= $user->getId() ?>" method="post">
 
@@ -41,8 +41,8 @@ $description = $result["data"]['description'];
                             <input class="submit-checkbox" type="submit" name="submit" value="Modifier" style="display: none;">
 
                         </form>
-                    </td>
-            </tr>
+                        </td>                            
+                </tr>
                 <?php
                 } 
                 ?>
