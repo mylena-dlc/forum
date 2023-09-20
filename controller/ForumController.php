@@ -42,6 +42,38 @@ class ForumController extends AbstractController implements ControllerInterface
         ];
     }
 
+    /************************************* Recherche ************************************** */
+
+    public function search() {
+
+        $categoryManager = new CategoryManager;
+        $topicManager = new TopicManager;
+
+       
+        if (isset($_POST['submit'])) {
+            // on recupère la requête de recherche à partir de la variable $_POST['query'].
+            $query = filter_input(INPUT_POST, "query", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $categories = $categoryManager->searchCategory($query);
+
+            $topics = $topicManager->searchTopic($query);
+
+         
+
+
+            return [
+                "view" => VIEW_DIR . "forum/search.php",
+                "data" => [
+                    "categories" => $categories,
+                    "topics" => $topics,
+                    "title" => "Recherche", 
+                    "description" => "Résultat de la recherche" 
+                ]
+            ];
+
+        }
+    }
+
 
     /************************************* Catégorie ************************************** */
 
@@ -75,18 +107,50 @@ class ForumController extends AbstractController implements ControllerInterface
         if (isset($_POST['submit'])) {
             $label = filter_input(INPUT_POST, "label", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            // Vérifiez s'il y a un fichier téléchargé            
             if (isset($_FILES['picture'])) {
-                $target_dir = "public/img/";
-                $picture = $target_dir . basename($_FILES["picture"]["name"]);
-                move_uploaded_file($_FILES['picture']['tmp_name'], $picture);
+                // on vérifie si la taille du fichier est inférieure à 200 Ko (200 * 1024 octets)
+                if ($_FILES["picture"]["size"] <= 200 * 1024) {
+                    $target_dir = "public/upload/"; // chemin vers le dossier upload
+                    $file_name = $_FILES["picture"]["name"]; // extrait le nom original du fichier
+                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION); // recupère l'extension du fichier
+
+                    // Tableau des extensions autorisées
+                    $extensions = array("jpg", "jpeg", "png", "gif");
+                    
+                    // on vérifie si l'extension du fichier est autorisée
+                    if (in_array(strtolower($file_extension), $extensions)) {
+
+                        $unique_id = uniqid(); // genère un ID unique
+                    
+                        // nouveau nom de fichier en ajoutant l'ID unique et l'extension
+                        $pictureName = $unique_id . '.' . $file_extension;
+                    
+                        // chemin complet pour le nouveau fichier
+                        $picture = $target_dir . $pictureName;
+
+                        // on déplace le fichier téléchargé vers le dossier d'upload avec le nouveau nom de fichier
+                        move_uploaded_file($_FILES['picture']['tmp_name'], $picture);
+                        
+                        // Maintenant, $picture contient le chemin complet vers le fichier téléchargé avec l'ID unique dans le dossier d'upload.
+
+                    } else {
+                        // l'extension du fichier n'est pas autorisée
+                        Session::addFlash('error', "Seuls les fichiers JPEG, PNG et GIF sont autorisés");
+                        $this->redirectTo("forum", "listCategories");
+                    }
+                } else {
+                    // le fichier dépasse la limite de 2 Ko
+                    Session::addFlash('error', "Le fichier est trop volumineux. La taille maximale autorisée est de 200 Ko.");
+                    $this->redirectTo("forum", "listCategories");
+                }
+
             }
 
-            // si les règles de validation du formulaire sont respectées
+            // si on récupère bien le nom et l'image de la cétégorie
             if ($label && $picture) {
 
                 // on ajoute un tableau avec les nouvelles données
-                $categories = $manager->add(["label" => $label, "picture" => $picture]);
+                $categories = $manager->add(["label" => $label, "picture" => $pictureName]);
                 if ($categories) {
                     Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> Catégorie ajoutée !");
                 } else {
@@ -104,10 +168,22 @@ class ForumController extends AbstractController implements ControllerInterface
     public function deleteCategory($id) {
 
         $manager = new CategoryManager;
-        $categories = $manager->delete($id);
 
-        // si la catégorie a bein été supprimé
-            if ($categories) {
+        // on recupère la catégorie qu'on veut supprimer
+        $category = $manager->findOneById($id);
+        // on construit le chemin complet jusqu'à l'image dans le dossier upload
+        $picture = "public/upload/" . $category->getPicture($id);
+
+        // si le fichier existe, alors on le supprime
+        if (file_exists($picture)) {
+            unlink($picture);
+        }
+
+        // puis on supprime la catégorie de la BDD
+        $category = $manager->delete($id);
+
+        // si la catégorie a bein été supprimée
+            if ($category) {
                 Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> La catégorie a été supprimée !");
             } else {
                 Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i>Echec lors de la suppression de la catégorie ");
@@ -144,18 +220,48 @@ class ForumController extends AbstractController implements ControllerInterface
         if (isset($_POST['submit'])) {
             $label = filter_input(INPUT_POST, "label", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-            // Vérifiez s'il y a un fichier téléchargé            
             if (isset($_FILES['picture'])) {
-                $target_dir = "public/img/";
-                $picture = $target_dir . basename($_FILES["picture"]["name"]);
-                move_uploaded_file($_FILES['picture']['tmp_name'], $picture);
+                // on vérifie si la taille du fichier est inférieure à 200 Ko (200 * 1024 octets)
+                if ($_FILES["picture"]["size"] <= 200 * 1024) {
+                    $target_dir = "public/upload/"; // chemin vers le dossier upload
+                    $file_name = $_FILES["picture"]["name"]; // extrait le nom original du fichier
+                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION); // recupère l'extension du fichier
+
+                    // Tableau des extensions autorisées
+                    $extensions = array("jpg", "jpeg", "png", "gif");
+                    
+                    // on vérifie si l'extension du fichier est autorisée
+                    if (in_array(strtolower($file_extension), $extensions)) {
+
+                        $unique_id = uniqid(); // genère un ID unique
+                    
+                        // nouveau nom de fichier en ajoutant l'ID unique et l'extension
+                        $pictureName = $unique_id . '.' . $file_extension;
+                    
+                        // chemin complet pour le nouveau fichier
+                        $picture = $target_dir . $pictureName;
+
+                        // on déplace le fichier téléchargé vers le dossier d'upload avec le nouveau nom de fichier
+                        move_uploaded_file($_FILES['picture']['tmp_name'], $picture);
+                        // Maintenant, $picture contient le chemin complet vers le fichier téléchargé avec l'ID unique dans le dossier d'upload.
+
+                    } else {
+                        // l'extension du fichier n'est pas autorisée
+                        Session::addFlash('error', "Seuls les fichiers JPEG, PNG et GIF sont autorisés");
+                        $this->redirectTo("forum", "listCategories");
+                    }
+                } else {
+                    // le fichier dépasse la limite de 2 Ko
+                    Session::addFlash('error', "Le fichier est trop volumineux. La taille maximale autorisée est de 200 Ko.");
+                    $this->redirectTo("forum", "listCategories");
+                }
             }
 
             // si les variables ont bien été filtrées
             if ($label && $picture) {
 
                 // on remplace avec les nouvelles données
-                $categories = $manager->update(["id" => $id, "label" => $label, "picture" => $picture]);
+                $categories = $manager->update(["id" => $id, "label" => $label, "picture" => $pictureName]);
 
                 if ($categories) {
                     Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> La catégorie a été modifiée !");

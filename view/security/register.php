@@ -16,7 +16,7 @@ $description = $result["data"]['description'];
   <div class="formulaire-register">
     <div class="register">
 
-      <form action="index.php?ctrl=security&action=register" onsubmit="return validateForm()" method="post">
+      <form action="index.php?ctrl=security&action=register" method="post">
         <label for="pseudo">Pseudo :</label>
         <input type="text" id="pseudo" name="pseudo" placeholder="Entrez un pseudo" required>
 

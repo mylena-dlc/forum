@@ -35,6 +35,25 @@
             );
         }
 
+        //fonction pour effectuer une recherche dans la table catégorie
+        public function searchCategory($query) {
+           
 
+            $sql = "SELECT c.id_category, c.label, c.picture, count(t.category_id) AS nbTopic
+            FROM ".$this->tableName." c
+            INNER JOIN topic t on t.".$this->tableName."_id = c.id_".$this->tableName."
+            group by c.id_".$this->tableName." 
+            HAVING label LIKE :query";
+                    
+                    
+
+            return $this->getMultipleResults(
+                DAO::select($sql, [':query' => '%' . $query . '%']), 
+                $this->className
+            );
+        }
+
+
+ 
 
     }

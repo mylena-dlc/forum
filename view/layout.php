@@ -32,14 +32,25 @@ $description = $result["data"]['description'];
                     
                     <div id="nav-left">
                         <a href="index.php?ctrl=home">Accueil</a>
+
                         <?php
                         if (App\Session::isAdmin()) {
                         ?>
-                            <a href="index.php?ctrl=security&action=listUsers" rel="nofollow">Voir la liste des utilisateurs</a>
+                            <a href="index.php?ctrl=security&action=listUsers" rel="nofollow">tous les utilisateurs</a>
 
                         <?php
                         }
-                        ?>
+                        ?>                        
+                        
+                        <!-- Barre de recherche -->
+                        <form class="form-search" action="index.php?ctrl=forum&action=search" method="post">
+                            <!-- <label for="queryl">rechercher</label> -->
+                            <input type="text" name="query" placeholder="Rechercher...">
+                            <button class="submit-topic submit-category search" type="submit" name="submit">
+                                <i class='fa-solid fa-magnifying-glass'></i>
+                            </button>
+                        </form>
+
                     </div>
                     <div id="nav-right">
                         <?php

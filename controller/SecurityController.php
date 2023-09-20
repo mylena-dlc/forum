@@ -81,9 +81,8 @@ class SecurityController extends AbstractController implements ControllerInterfa
             $confirmPassword = filter_input(INPUT_POST, "confirmPassword", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             // Vérifier si le mot de passe et sa confirmation correspondent et ont une longueur d'au moins 12 caractères, une majuscule, une minuscule et un caractère spécial
-            // if ($password === $confirmPassword && strlen($password) >= 12 && preg_match('/[a-z]/', $password) && preg_match('/[A-Z]/', $password) && preg_match('/[!@#$%^&*()\-_=+{};:,<.>]/', $password)) {
+            if ($password === $confirmPassword && strlen($password) >= 12 && preg_match('/[a-z]/', $password) && preg_match('/[A-Z]/', $password) && preg_match('/[!@#$%^&*()\-_=+{};:,<.>]/', $password)) {
 
-            if ($password === $confirmPassword && strlen($password) >= 12) {
                 // Hacher le mot de passe
                 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
@@ -101,30 +100,26 @@ class SecurityController extends AbstractController implements ControllerInterfa
 
                             if ($user) {
                                 Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> Inscription validée !");
-                                header("Location:index.php?ctrl=security&action=loginForm");
+                                return $this->redirectTo("security", "loginForm");
                             } else {
                                 Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i> Erreur lors de l'inscription");
-                                // $this->redirectTo($this->registerForm());
-                                header("Location:index.php?ctrl=security&action=registerForm");
+                                $this->redirectTo("security", "registerForm");
                             }
                         } else {
                             Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i> Pseudo déjà enregistré, veuillez en choisir un autre");
-                            header("Location:index.php?ctrl=security&action=registerForm");
+                            $this->redirectTo("security", "registerForm");
                         }
                     } else {
                         Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i> Email déjà enregistré, veuillez en choisir un autre ou connectez-vous");
-                        // $this->redirectTo($this->registerForm());
-                        header("Location:index.php?ctrl=security&action=registerForm");
+                        $this->redirectTo("security", "registerForm");
                     }
                 } else {
                     Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i> Email, pseudo ou mot de passe invalide");
-                    // $this->redirectTo("security", "register");
-                    header("Location:index.php?ctrl=security&action=registerForm");
+                    $this->redirectTo("security", "registerForm");
                 }
             } else {
-                Session::addFlash('error', "Mot de passe invalide : il doit contenir au moins 12 caractères. Veuillez les saisir à nouveau.");
-                header("Location:index.php?ctrl=security&action=registerForm");
-                // $this->redirectTo($this->registerForm());
+                Session::addFlash('error', "Mot de passe invalide : il doit contenir au moins 12 caractères dont une majuscule, une minuscule et un caractère spécial (/[!@#$%^&*()\-_=+{};:,<.>]/)");
+                $this->redirectTo("security", "registerForm");
             }
         }
     }

@@ -52,7 +52,7 @@ $description = $result['data']['description'];
         <a href="index.php?ctrl=forum&action=listTopicsByIdCategory&id=<?= $category->getId() ?>">
 
           <figure class="figure-img">
-            <img class="category-img" src="<?= $category->getPicture() ?>" alt="picture of <?= $category->getLabel() ?>">
+            <img class="category-img" src="./public/upload/<?= $category->getPicture() ?>" alt="picture of <?= $category->getLabel() ?>">
 
             <!-- Nombre de topic au hover -->
             <figcaption class="nb-topic">
