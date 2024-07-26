@@ -1,12 +1,15 @@
 <?php
-        // je range la classe dans un espace virtuel namespace
     namespace Model\Entities;
-        // va chercher la classe Entity qui se trouve dans le namespace APP
+
     use App\Entity;
-        // classe finale, cette classe ne peut pas avoir d'enfant. La classe Topic hérite de la classe Entity
+
+/**
+*  Represents a topic in the forum application
+*
+*/
+
     final class Topic extends Entity{
 
-        // liste des propriétés de la classe Topic selon le principe d'encapsulation (visibilité des éléments au sein d'une classe), mes propriétés sont en privées, elles seront accessibles que au sein de la classe
         private $id;
         private $title;
         private $creationDate;
@@ -14,37 +17,43 @@
         private $user;
         private $category;
       
-        
-
-
-        public function __construct($data){         
-            $this->hydrate($data);  // l'hydratation permet de prendre des données de la base de donnée pour créé des objets       
+        /**
+         * Constructor to initialize the topic entity.
+         *
+         * @param array $data Initial data for the topic entity.
+         */
+        public function __construct(array $data){         
+            $this->hydrate($data);        
         }
  
         /**
          * Get the value of id
+         * 
+         * @return int|null User ID.
          */ 
-        public function getId()
+        public function getId(): self
         {
                 return $this->id;
         }
 
         /**
          * Set the value of id
-         *
+         *         
+         * @param int $id Topic 
          * @return  self
          */ 
-        public function setId($id)
+        public function setId(int $id): self
         {
                 $this->id = $id;
-
                 return $this;
         }
 
         /**
          * Get the value of title
+         * 
+         * @return string|null User pseudonym.
          */ 
-        public function getTitle()
+        public function getTitle(): ?string
         {
                 return $this->title;
         }
@@ -52,19 +61,21 @@
         /**
          * Set the value of title
          *
+         * @param string $title Topic
          * @return  self
          */ 
-        public function setTitle($title)
+        public function setTitle(string $title): self
         {
                 $this->title = $title;
-
                 return $this;
         }
 
         /**
          * Get the value of user
+         * 
+         * @return self
          */ 
-        public function getUser()
+        public function getUser(): self
         {
                 return $this->user;
         }
@@ -72,19 +83,21 @@
         /**
          * Set the value of user
          *
+         * @param int $user User 
          * @return  self
          */ 
-        public function setUser($user)
+        public function setUser(int $user): self
         {
                 $this->user = $user;
-
                 return $this;
         }
 
-                /**
+         /**
          * Get the value of category
+         * 
+         * @return self
          */ 
-        public function getCategory()
+        public function getCategory(): ?int
         {
                 return $this->category;
         }
@@ -92,29 +105,43 @@
         /**
          * Set the value of category
          *
+         * @param int $category Category
          * @return  self
          */ 
-        public function setCategory($category)
+        public function setCategory(int $category): self
         {
                 $this->category = $category;
-
                 return $this;
         }
 
-        public function getCreationDate(){
+         /**
+         * Get the formatted creation date
+         * 
+         * @return string|null Formatted creation date (d/m/Y, H:i:s)
+         */ 
+        public function getCreationDate(): ?string
+        {
             $formattedDate = $this->creationDate->format("d/m/Y, H:i:s");
             return $formattedDate;
         }
 
-        public function setCreationDate($date){
+        /**
+         * Set the value of creation date
+         *      
+         * @param string $date Date in a valid datetime format.
+         */ 
+        public function setCreationDate(string $date): self
+        {
             $this->creationDate = new \DateTime($date);
             return $this;
         }
 
         /**
          * Get the value of closed
+         * 
+         * @return bool|null Account status (true if closed, false otherwise).
          */ 
-        public function getIsClosed()
+        public function getIsClosed(): ?bool
         {
                 return $this->isClosed;
         }
@@ -122,18 +149,22 @@
         /**
          * Set the value of closed
          *
+         * @param bool $isClosed Account status (true if closed, false otherwise)
          * @return  self
          */ 
-        public function setIsClosed($isClosed)
+        public function setIsClosed(bool $isClosed): ?bool
         {
                 $this->isClosed = $isClosed;
-
                 return $this;
         }
 
-
-
-        public function to__String() {
+        /**
+         * Convert the user object to a string
+         * 
+         * @return string Topic title
+         */
+        public function to__String(): string 
+        {
                 return $this->title;
         }
     }

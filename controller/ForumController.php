@@ -11,15 +11,29 @@ use Model\Managers\PostManager;
 use Model\Managers\CategoryManager;
 use Model\Managers\UserManager;
 
+/**
+ * ForumController class
+ * Manages forum-related actions such as viewing categories, topics, posts, and handling search.
+ */
+
 class ForumController extends AbstractController implements ControllerInterface
 {
 
+    /**
+     * Displays a list of all categories with the number of topics in each.
+     *
+     * @return array An array containing the view path and the data to be displayed in the view.
+     */
+
     public function index()
     {
+        // Instantiate the CategoryManager to interact with the category data
         $manager = new CategoryManager;
 
+        // Retrieve all categories sorted by label in ascending order, along with the number of topics in each
         $categories = $manager->findAllPlusNbTopic(["label", "ASC"]);
 
+        // Return the view and data to be displayed
         return [
             "view" => VIEW_DIR . "forum/listCategories.php",
             "data" => [
@@ -30,9 +44,15 @@ class ForumController extends AbstractController implements ControllerInterface
         ];
     }
 
+    /**
+     * Displays the home page of the forum.
+     *
+     * @return array An array containing the view path and the data to be displayed in the view.
+     */
 
     public function home()
     {
+        // Return the view and data for the forum home page
         return [
             "view" => VIEW_DIR . "forum/home.php",
             "data" => [
@@ -42,25 +62,30 @@ class ForumController extends AbstractController implements ControllerInterface
         ];
     }
 
-    /************************************* Recherche ************************************** */
+    /**
+     * Manages the header search function, 
+     * Category and topic search 
+     *
+     * @return array An array containing the view path and the search results if a search query is submitted.
+     */
 
     public function search() {
 
+        // Instantiate the CategoryManager and TopicManager for searching categories and topics
         $categoryManager = new CategoryManager;
         $topicManager = new TopicManager;
 
-       
+        // Check if the search form has been submitted
         if (isset($_POST['submit'])) {
-            // on recupère la requête de recherche à partir de la variable $_POST['query'].
+
+            // Sanitize the search query to prevent XSS attacks
             $query = filter_input(INPUT_POST, "query", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+            // Search for categories and topics matching the query
             $categories = $categoryManager->searchCategory($query);
-
             $topics = $topicManager->searchTopic($query);
 
-         
-
-
+            // Return the view and search results
             return [
                 "view" => VIEW_DIR . "forum/search.php",
                 "data" => [
@@ -70,205 +95,227 @@ class ForumController extends AbstractController implements ControllerInterface
                     "description" => "Résultat de la recherche" 
                 ]
             ];
-
         }
     }
 
 
-    /************************************* Catégorie ************************************** */
-
-    // fonction pour lister toutes les catégories du forum
+    /**
+     * Displays a list of all categories with the number of topics in each on the category page 
+     *
+     * @return array An array containing the view path and the data to be displayed in the view.
+     */
+   
     public function listCategories()
     {
-
+        // Instantiate the CategoryManager to interact with the category data
         $manager = new CategoryManager;
-        // on récupère toutes les catégories avec le nombre de sujets associés trié par leur nom
+        
+        // Retrieve all categories sorted by label in ascending order, along with the number of topics in each
         $categories = $manager->findAllPlusNbTopic(["label", "ASC"]);
 
-        // retourne un tableau avec les informations pour le contenu de la vue
+        // Return the view and data to be displayed
         return [
             "view" => VIEW_DIR . "forum/listCategories.php",
             "data" => [
-                "categories" => $categories, // liste des catégorie
-                "title" => "Liste des catégories", // titre de la page
-                "description" => "Liste de toutes les catégories du forum" // description
+                "categories" => $categories,
+                "title" => "Liste des catégories", 
+                "description" => "Liste de toutes les catégories du forum" 
             ]
         ];
     }
 
 
-    // fonction pour ajouter une catégorie
+    /**
+     * Adds a new category to the forum.
+     */
+
     public function addCategory()
     {
-
+        // Instantiate the CategoryManager to interact with the category data
         $manager = new CategoryManager;
 
-        // on vérifie ce qui arrive en POST
+        // Check if the form has been submitted
         if (isset($_POST['submit'])) {
+
+            // Sanitize the label input to prevent XSS attacks
             $label = filter_input(INPUT_POST, "label", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+            // Check if a picture has been uploaded
             if (isset($_FILES['picture'])) {
-                // on vérifie si la taille du fichier est inférieure à 200 Ko (200 * 1024 octets)
-                if ($_FILES["picture"]["size"] <= 200 * 1024) {
-                    $target_dir = "public/upload/"; // chemin vers le dossier upload
-                    $file_name = $_FILES["picture"]["name"]; // extrait le nom original du fichier
-                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION); // recupère l'extension du fichier
 
-                    // Tableau des extensions autorisées
+                // Ensure the picture size is within the allowed limit (200 KB)
+                if ($_FILES["picture"]["size"] <= 200 * 1024) {
+                    $target_dir = "public/upload/";
+                    $file_name = $_FILES["picture"]["name"]; 
+                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION); 
+
+                    // Define allowed file extensions
                     $extensions = array("jpg", "jpeg", "png", "gif");
                     
-                    // on vérifie si l'extension du fichier est autorisée
+                    // Check if the file extension is allowed
                     if (in_array(strtolower($file_extension), $extensions)) {
 
-                        $unique_id = uniqid(); // genère un ID unique
-                    
-                        // nouveau nom de fichier en ajoutant l'ID unique et l'extension
+                        $unique_id = uniqid(); 
                         $pictureName = $unique_id . '.' . $file_extension;
-                    
-                        // chemin complet pour le nouveau fichier
                         $picture = $target_dir . $pictureName;
 
-                        // on déplace le fichier téléchargé vers le dossier d'upload avec le nouveau nom de fichier
+                       // Move the uploaded file to the target directory
                         move_uploaded_file($_FILES['picture']['tmp_name'], $picture);
-                        
-                        // Maintenant, $picture contient le chemin complet vers le fichier téléchargé avec l'ID unique dans le dossier d'upload.
-
+                    
                     } else {
-                        // l'extension du fichier n'est pas autorisée
+                        // Add an error flash message if the file extension is not allowed
                         Session::addFlash('error', "Seuls les fichiers JPEG, PNG et GIF sont autorisés");
                         $this->redirectTo("forum", "listCategories");
                     }
                 } else {
-                    // le fichier dépasse la limite de 2 Ko
+                    // Add an error flash message if the file is too large
                     Session::addFlash('error', "Le fichier est trop volumineux. La taille maximale autorisée est de 200 Ko.");
                     $this->redirectTo("forum", "listCategories");
                 }
-
             }
-
-            // si on récupère bien le nom et l'image de la cétégorie
+            // Add the category to the database if the label and picture are valid
             if ($label && $picture) {
 
-                // on ajoute un tableau avec les nouvelles données
                 $categories = $manager->add(["label" => $label, "picture" => $pictureName]);
                 if ($categories) {
+                    // Add a success flash message if the category is added successfully
                     Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> Catégorie ajoutée !");
                 } else {
+                    // Add an error flash message if there is an error adding the category
                     Session::addFlash('error', "Erreur lors de l'ajout de la catégorie !");
                 }
-
-                // puis on redirige vers la vue listCategories
+                // Redirect to the list of categories
                 $this->redirectTo("forum", "listCategories");
             }
         }
     }
 
 
-    // fonction pour supprimer une catégorie
+    /**
+     * Deletes a category from the forum
+     *
+     * @param int $id The ID of the category to delete
+     */   
+
     public function deleteCategory($id) {
 
+        // Instantiate the CategoryManager to interact with the category data
         $manager = new CategoryManager;
 
-        // on recupère la catégorie qu'on veut supprimer
+        // Find the category to delete by its ID
         $category = $manager->findOneById($id);
-        // on construit le chemin complet jusqu'à l'image dans le dossier upload
-        $picture = "public/upload/" . $category->getPicture($id);
 
-        // si le fichier existe, alors on le supprime
+        // Construct the path to the category's picture
+        $picture = "public/upload/" . $category->getPicture($id);
+    
+        // Check if the picture file exists and delete it
         if (file_exists($picture)) {
             unlink($picture);
         }
 
-        // puis on supprime la catégorie de la BDD
+        // Delete the category from the database
         $category = $manager->delete($id);
 
-        // si la catégorie a bein été supprimée
+            // Add a flash message based on the result of the deletion
             if ($category) {
                 Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> La catégorie a été supprimée !");
             } else {
                 Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i>Echec lors de la suppression de la catégorie ");
             }
 
-        $this->redirectTo("forum", "listCategories");
+            // Redirect to the list of categories
+            $this->redirectTo("forum", "listCategories");
     }
 
 
-    // fonction pour rediriger vers le formulaire de modification
+    /**
+     * Displays the form for updating a category
+     *
+     * @param int $id The ID of the category to update
+     * @return array An associative array containing the view and data for the update form
+     */
+
     public function updateCategoryForm($id)
     {
-        // création d'une instance de classe 
+        // Instantiate the CategoryManager to interact with the category data
         $manager = new CategoryManager;
-        // récupération de l'id de la catégorie
+
+        // Retrieve the category object by its ID
         $category = $manager->findOneById($id);
-        // préparation des données à retourner sous forme d'un tableau assosiatif
+
+        // Return the view and data to be displayed
         return [
-            "view" => VIEW_DIR . "forum/updateCategory.php", // vue pour afficher le formulaire
-            "data" => [  // La clé "data" contient un tableau associatif contenant les données à transmettre à la vue
-                "category" => $category, // La clé "category" contient l'objet de catégorie récupéré précédemment, qui sera accessible dans la vue
+            "view" => VIEW_DIR . "forum/updateCategory.php", 
+            "data" => [  
+                "category" => $category, 
                 "title" => "Modification catégorie",
                 "description" => "Formulaire de modification d'une catégorie"
             ]
         ];
     }
 
-    // fonction pour modifier une catégorie
-    public function updateCategory($id) {
+    /**
+     * Updates a category with new data
+     *
+     * @param int $id The ID of the category to update
+     */
+    public function updateCategory(int $id) {
 
+        // Instantiate the CategoryManager to interact with the category data
         $manager = new CategoryManager;
 
-        // on vérifie ce qui arrive en POST
+        // Check if the form has been submitted
         if (isset($_POST['submit'])) {
+            // Sanitize the label input to prevent XSS attacks
             $label = filter_input(INPUT_POST, "label", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
+            // Check if a picture has been uploaded
             if (isset($_FILES['picture'])) {
-                // on vérifie si la taille du fichier est inférieure à 200 Ko (200 * 1024 octets)
-                if ($_FILES["picture"]["size"] <= 200 * 1024) {
-                    $target_dir = "public/upload/"; // chemin vers le dossier upload
-                    $file_name = $_FILES["picture"]["name"]; // extrait le nom original du fichier
-                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION); // recupère l'extension du fichier
 
-                    // Tableau des extensions autorisées
+                // Ensure the picture size is within the allowed limit (200 KB)
+                if ($_FILES["picture"]["size"] <= 200 * 1024) {
+                    $target_dir = "public/upload/"; 
+                    $file_name = $_FILES["picture"]["name"]; 
+                    $file_extension = pathinfo($file_name, PATHINFO_EXTENSION); 
+
+                    // Define allowed file extensions
                     $extensions = array("jpg", "jpeg", "png", "gif");
                     
-                    // on vérifie si l'extension du fichier est autorisée
+                    // Check if the file extension is allowed
                     if (in_array(strtolower($file_extension), $extensions)) {
 
-                        $unique_id = uniqid(); // genère un ID unique
-                    
-                        // nouveau nom de fichier en ajoutant l'ID unique et l'extension
+                        $unique_id = uniqid(); 
                         $pictureName = $unique_id . '.' . $file_extension;
-                    
-                        // chemin complet pour le nouveau fichier
                         $picture = $target_dir . $pictureName;
 
-                        // on déplace le fichier téléchargé vers le dossier d'upload avec le nouveau nom de fichier
+                       // Move the uploaded file to the target directory
                         move_uploaded_file($_FILES['picture']['tmp_name'], $picture);
-                        // Maintenant, $picture contient le chemin complet vers le fichier téléchargé avec l'ID unique dans le dossier d'upload.
 
                     } else {
-                        // l'extension du fichier n'est pas autorisée
+                        // Add an error flash message if the file extension is not allowed
                         Session::addFlash('error', "Seuls les fichiers JPEG, PNG et GIF sont autorisés");
                         $this->redirectTo("forum", "listCategories");
                     }
                 } else {
-                    // le fichier dépasse la limite de 2 Ko
+                    // Add an error flash message if the file is too large
                     Session::addFlash('error', "Le fichier est trop volumineux. La taille maximale autorisée est de 200 Ko.");
                     $this->redirectTo("forum", "listCategories");
                 }
             }
 
-            // si les variables ont bien été filtrées
+            // Add the category to the database if the label and picture are valid
             if ($label && $picture) {
 
-                // on remplace avec les nouvelles données
                 $categories = $manager->update(["id" => $id, "label" => $label, "picture" => $pictureName]);
 
                 if ($categories) {
+                 // Add a success flash message if the category is added successfully
                     Session::addFlash('success', "<i class='fa-solid fa-square-check'></i> La catégorie a été modifiée !");
                 } else {
+                    // Add an error flash message if there is an error adding the category
                     Session::addFlash('error', "<i class='fa-solid fa-circle-exclamation'></i>  Echec lors de la modification de la catégorie");
                 }
-                // puis on redirige vers la vue listCategories
+                // Redirect to the list of categories
                 $this->redirectTo("forum", "listCategories");
             }
         }
@@ -278,6 +325,7 @@ class ForumController extends AbstractController implements ControllerInterface
 
     /************************************* Topic ************************************** */
 
+    
 
     // fonction pour lister tous les topics pour une catégorie
     public function listTopicsByIdCategory($id) {
